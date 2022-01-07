@@ -1,0 +1,55 @@
+{
+    "kind": "SeldonDeployment",
+    "apiVersion": "machinelearning.seldon.io/v1",
+    "metadata": {
+        "name": "image-classifier-demo",
+        "namespace": "dev",
+        "creationTimestamp": null,
+        "labels": {
+            "fluentd": "true"
+        }
+    },
+    "spec": {
+        "name": "image-classifier-demo",
+        "predictors": [
+            {
+                "name": "default",
+                "graph": {
+                    "name": "image-classifier-demo-container",
+                    "implementation": "TENSORFLOW_SERVER",
+                    "modelUri": "gs://seldon-models/tfserving/cifar10/resnet32",
+                    "logger": {
+                        "mode": "all"
+                    }
+                },
+                "componentSpecs": [
+                    {
+                        "metadata": {
+                            "creationTimestamp": "2022-01-07T16:16:08Z"
+                        },
+                        "spec": {
+                            "containers": [
+                                {
+                                    "name": "image-classifier-demo-container",
+                                    "resources": {}
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "annotations": {
+                    "project.seldon.io/image-classifier-demo-container": "Demo"
+                },
+                "engineResources": {},
+                "svcOrchSpec": {},
+                "traffic": 100
+            }
+        ],
+        "annotations": {
+            "seldon.io/engine-seldon-log-messages-externally": "true"
+        },
+        "protocol": "seldon"
+    },
+    "status": {}
+}

@@ -1,0 +1,79 @@
+{
+    "kind": "SeldonDeployment",
+    "apiVersion": "machinelearning.seldon.io/v1",
+    "metadata": {
+        "name": "mnist-v2-pc",
+        "namespace": "dev",
+        "creationTimestamp": null,
+        "labels": {
+            "fluentd": "true"
+        }
+    },
+    "spec": {
+        "name": "mnist-v2-pc",
+        "predictors": [
+            {
+                "name": "default",
+                "graph": {
+                    "name": "mnist-v2-pc-container",
+                    "implementation": "SKLEARN_SERVER",
+                    "modelUri": "gs://tom-seldon-examples/trial/aa/mnist_joblib",
+                    "logger": {
+                        "mode": "all"
+                    }
+                },
+                "componentSpecs": [
+                    {
+                        "metadata": {
+                            "creationTimestamp": "2022-01-11T18:25:05Z"
+                        },
+                        "spec": {
+                            "containers": [
+                                {
+                                    "name": "mnist-v2-pc-container",
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "1",
+                                            "memory": "1Gi",
+                                            "nvidia.com/gpu": "0"
+                                        },
+                                        "requests": {
+                                            "cpu": "100m",
+                                            "memory": "1Gi",
+                                            "nvidia.com/gpu": "0"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "hpaSpec": {
+                            "minReplicas": 1,
+                            "maxReplicas": 2,
+                            "metrics": [
+                                {
+                                    "type": "Resource",
+                                    "resource": {
+                                        "name": "cpu",
+                                        "targetAverageUtilization": 10
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "annotations": {
+                    "project.seldon.io/mnist-v2-pc-container": "default"
+                },
+                "engineResources": {},
+                "svcOrchSpec": {},
+                "traffic": 100
+            }
+        ],
+        "annotations": {
+            "seldon.io/engine-seldon-log-messages-externally": "true"
+        },
+        "protocol": "seldon"
+    },
+    "status": {}
+}

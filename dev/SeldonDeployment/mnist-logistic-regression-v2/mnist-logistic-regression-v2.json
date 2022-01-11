@@ -1,0 +1,55 @@
+{
+    "kind": "SeldonDeployment",
+    "apiVersion": "machinelearning.seldon.io/v1",
+    "metadata": {
+        "name": "mnist-logistic-regression-v2",
+        "namespace": "dev",
+        "creationTimestamp": null,
+        "labels": {
+            "fluentd": "true"
+        }
+    },
+    "spec": {
+        "name": "mnist-logistic-regression-v2",
+        "predictors": [
+            {
+                "name": "default",
+                "graph": {
+                    "name": "mnist-logistic-regression-v2-container",
+                    "implementation": "SKLEARN_SERVER",
+                    "modelUri": "gs://tom-seldon-examples/trial/aa/mnist_joblib",
+                    "logger": {
+                        "mode": "all"
+                    }
+                },
+                "componentSpecs": [
+                    {
+                        "metadata": {
+                            "creationTimestamp": "2022-01-11T16:41:31Z"
+                        },
+                        "spec": {
+                            "containers": [
+                                {
+                                    "name": "mnist-logistic-regression-v2-container",
+                                    "resources": {}
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "annotations": {
+                    "project.seldon.io/mnist-logistic-regression-v2-container": "default"
+                },
+                "engineResources": {},
+                "svcOrchSpec": {},
+                "traffic": 100
+            }
+        ],
+        "annotations": {
+            "seldon.io/engine-seldon-log-messages-externally": "true"
+        },
+        "protocol": "seldon"
+    },
+    "status": {}
+}
